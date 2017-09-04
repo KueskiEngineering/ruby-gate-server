@@ -25,6 +25,16 @@ module Gate
               auth.to_h
             end
           end
+
+          namespace :auth do
+            post do
+              process_request do
+                auth = Auth.build_auth(params)
+                token = auth.generate_token
+                token.to_h
+              end
+            end
+          end
         end
       end
     end
