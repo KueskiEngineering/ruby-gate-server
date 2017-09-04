@@ -1,0 +1,2 @@
+database:
+  endpoint: 'REPLACE_ME' # 'mysql2://user:password@lhost/database'
