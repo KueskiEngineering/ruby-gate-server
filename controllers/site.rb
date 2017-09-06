@@ -1,44 +1,31 @@
 # frozen_string_literal: true
 
 require_relative '../lib/exception'
+require_relative 'name_list_controller'
 
 module Gate
   module Controllers
     #
-    class Site
+    class Site < NameListController
       include Exceptions
-      def initialize(site_name)
-        @site = site_name
-        @dataset = Services.database[:site]
-                           .where(name: site_name)
-        @data = @dataset.first
+      def id_field
+        :site_id
       end
 
-      def exists?
-        !@data.nil?
+      def name_field
+        :name
       end
 
-      def name
-        @data[:name]
+      def control_table
+        :site
       end
 
-      def id
-        @data[:site_id]
+      def already_exists_exception
+        SiteAlreadyExists
       end
 
-      def create
-        raise(SiteAlreadyExists, @data) if exists?
-        @data = {
-          name: @site,
-          created_at: Time.now,
-          updated_at: Time.now,
-          enabled: true
-        }
-        Services.database[:site].insert(@data)
-      end
-
-      def to_h
-        @data
+      def not_found_exception
+        SiteNotFound
       end
     end
   end
