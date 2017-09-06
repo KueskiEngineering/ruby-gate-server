@@ -4,6 +4,8 @@ require 'ant'
 require_relative 'routes/auth'
 require_relative 'routes/sites'
 require_relative 'routes/users'
+require_relative 'routes/roles'
+require_relative 'routes/permissions'
 require_relative 'lib/services'
 
 Services.configure!
@@ -20,6 +22,8 @@ module Gate
     mount Routes::Auth
     mount Routes::Users
     mount Routes::Sites
+    mount Routes::Roles
+    mount Routes::Permissions
 
     get :me do
       process_request do
