@@ -76,5 +76,29 @@ module Gate
                server_time: Time.now, token_expiration_time: token.valid_until)
       end
     end
+
+    ##
+    #
+    class PermissionAlreadyExists < Ant::Exceptions::AntFail
+      def initialize(data)
+        super('The permission is already registered', nil, data)
+      end
+    end
+
+    ##
+    #
+    class RoleAlreadyExists < Ant::Exceptions::AntFail
+      def initialize(data)
+        super('The role is already registered', nil, data)
+      end
+    end
+
+    ##
+    #
+    class PermissionAlreadyAssigned < Ant::Exceptions::AntFail
+      def initialize(data)
+        super('The permission is already assigned', nil, data)
+      end
+    end
   end
 end
