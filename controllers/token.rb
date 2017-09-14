@@ -32,7 +32,8 @@ module Gate
       # rubocop: disable Stye/PredicateName
       def has_role?(role)
         return false if @data[:roles].nil?
-        @data[:roles].include?(role)
+        return @data[:roles].include?(role) unless role.is_a?(Array)
+        role.any? { has_role?(role) }
       end
       # rubocop: enable Stye/PredicateName
 
@@ -55,7 +56,21 @@ module Gate
         @data[:expiration_time]
       end
 
+      def transaction(options)
+        transaction_validate(options) ? transaction_default(options) : yield
+      end
+
       private
+
+      def transaction_validate(options)
+        return true if options[:role].nil?
+        has_role?(options[:role])
+      end
+
+      def transaction_default(options)
+        raise(UserHasNotPermission, @data) if options[:raise]
+        options[:default_value]
+      end
 
       def initialize(token, data)
         @token = token
