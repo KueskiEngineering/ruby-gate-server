@@ -32,7 +32,7 @@ module Gate
       def register
         raise(UserExistsOnSite.new(@user.name, @site.name)) if exists?
         @data = {
-          password: @password,
+          password: BCrypt::Password.create(@password),
           user_id: @user.id,
           site_id: @site.id,
           created_at: Time.now,
