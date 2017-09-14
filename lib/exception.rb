@@ -87,6 +87,14 @@ module Gate
 
     ##
     #
+    class UserHasNotPermission < Ant::Exceptions::AntFail
+      def initialize(data)
+        super('User has not permission for that request', nil, data)
+      end
+    end
+
+    ##
+    #
     class RoleAlreadyExists < Ant::Exceptions::AntFail
       def initialize(data)
         super('The role is already registered', nil, data)
