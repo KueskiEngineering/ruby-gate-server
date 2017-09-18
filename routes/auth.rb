@@ -9,7 +9,7 @@ module Gate
       def self.build_auth(params)
         pass = params[:pass]
         params[:pass] = '*' * 8
-        site = Controllers::Sites.new(params[:site])
+        site = Controllers::Site.new(params[:site])
         raise(SiteNotFound, params[:site]) unless site.exists?
         user = Controllers::User.new(params[:user])
         raise(UserNotFound, params[:user]) unless user.exists?

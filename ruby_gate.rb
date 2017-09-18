@@ -4,9 +4,8 @@ require 'ant'
 require_relative 'routes/auth'
 require_relative 'routes/sites'
 require_relative 'routes/users'
-require_relative 'routes/roles'
-require_relative 'routes/permissions'
 require_relative 'lib/services'
+require_relative 'helpers/token_from_request'
 
 Services.configure!
 
@@ -14,16 +13,15 @@ module Gate
   ##
   #
   class API < Grape::API
-    version('v1', using: :header, vendor: :udeg)
+    version('v1', using: :header, vendor: :kueski)
     prefix(:api)
     format(:json)
     helpers Ant::Response
+    helpers TokenFromRequest
 
     mount Routes::Auth
     mount Routes::Users
     mount Routes::Sites
-    mount Routes::Roles
-    mount Routes::Permissions
 
     get :me do
       process_request do
