@@ -43,6 +43,15 @@ module Gate
         Services.database[:auth].insert(@data)
       end
 
+      def reset_password
+        @data[:password] = BCrypt::Password.create(@password)
+        @data[:updated_at] = Time.now
+        Services
+          .database[:auth]
+          .where(user_id: @user.id, site_id: @site.id)
+          .update(password: @data[:password], updated_at: @data.updated_at)
+      end
+
       def valid_password?
         raise(WrongPassword) unless exists?
         BCrypt::Password.new(@data[:password]) == @password
