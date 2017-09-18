@@ -38,6 +38,23 @@ module Gate
       def already_exists_exception
         PermissionAlreadyExists
       end
+
+      def not_found_exception
+        PermissionNotFound
+      end
+
+      def self.user_permissions(user, site)
+        Services
+          .database[:user_role]
+          .inner_join(:role, [:role_id])
+          .inner_join(:site, [:site_id])
+          .inner_join(:user, [:user_id])
+          .inner_join(:role_description, [:role_id])
+          .inner_join(:permission, [:permission_id])
+          .where(Sequel.qualify(:site, :name) => site, username: user,
+                 Sequel.qualify(:role, :enabled) => true)
+          .select_map(Sequel.qualify(:permission, :name))
+      end
     end
   end
 end
