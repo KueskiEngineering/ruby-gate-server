@@ -34,6 +34,15 @@ module Gate
                 token.to_h
               end
             end
+
+            post :pub_key do
+              process_request do
+                token = token_from_request('gate-server')
+                token.transaction(role: 'service', raise: true) do
+                  Services.jwt_public_key(params[:site]).to_pem
+                end
+              end
+            end
           end
         end
       end
