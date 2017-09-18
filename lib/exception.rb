@@ -119,6 +119,15 @@ module Gate
 
     ##
     #
+    class UserNotOnSite < Ant::Exceptions::AntFail
+      def initialize(user, site)
+        data = { user: user.name, site: site.name }
+        super('The user is not registered on that site', nil, data)
+      end
+    end
+
+    ##
+    #
     class PermissionAlreadyAssigned < Ant::Exceptions::AntFail
       def initialize(data)
         super('The permission is already assigned', nil, data)

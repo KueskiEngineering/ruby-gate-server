@@ -53,7 +53,7 @@ module Gate
       end
 
       def valid_password?
-        raise(UserNotFound) unless exists?
+        raise(UserNotOnSite.new(@user, @site)) unless exists?
         BCrypt::Password.new(@data[:password]) == @password
       end
 
