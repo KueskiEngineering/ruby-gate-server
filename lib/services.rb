@@ -18,21 +18,28 @@ module Services
       @database ||= Sequel.connect(@config['database']['endpoint'])
     end
 
-    def jwt_public_key
-      gen_key if @public_key.nil?
-      @public_key
+    def jwt_public_key(site)
+      key(site)[:public]
     end
 
-    def jwt_private_key
-      gen_key if @private_key.nil?
-      @private_key
+    def jwt_private_key(site)
+      key(site)[:private]
     end
 
     private
 
-    def gen_key
-      @private_key = OpenSSL::PKey::RSA.generate 2048
-      @public_key = @private_key.public_key
+    def key(site)
+      @keys ||= {}
+      @keys[site] ||= generate_key
+    end
+
+    def generate_key
+      priv = OpenSSL::PKey::RSA.generate 2048
+      pub = priv.public_key
+      {
+        private: priv,
+        public: pub
+      }
     end
   end
 end
