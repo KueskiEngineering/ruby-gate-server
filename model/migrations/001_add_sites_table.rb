@@ -2,7 +2,6 @@
 
 Sequel.migration do
   up do
-    $SEQUEL_VERBOSE = true
     create_table(:site) do
       primary_key :site_id, auto_increment: true
       String   :name, null: false, size: 30, unique: true
