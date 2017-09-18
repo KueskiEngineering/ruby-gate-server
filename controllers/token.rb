@@ -24,7 +24,7 @@ module Gate
           data, _payload = JWT.decode(token, Services.jwt_public_key,
                                       true, algoritm: 'RS512')
           new(token, data.symbolize_keys)
-        rescue JWT::VerificationError => _
+        rescue JWT::VerificationError, JWT::DecodeError => _
           raise(Exceptions::InvalidToken)
         end
       end
@@ -57,18 +57,19 @@ module Gate
       end
 
       def transaction(options)
-        transaction_validate(options) ? transaction_default(options) : yield
+        transaction_validate(options) ? yield : transaction_default(options)
       end
 
       private
 
       def transaction_validate(options)
+        return false if options[:user] && @data[:username] != options[:user]
         return true if options[:role].nil?
         has_role?(options[:role])
       end
 
       def transaction_default(options)
-        raise(UserHasNotPermission, @data) if options[:raise]
+        raise(UserHasNotPermission, options[:role]) if options[:raise]
         options[:default_value]
       end
 
