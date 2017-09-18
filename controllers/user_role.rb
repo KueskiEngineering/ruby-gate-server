@@ -4,6 +4,7 @@ require_relative 'relationship_controller'
 module Gate
   module Controllers
     class UserRole < RelationshipController
+      include Exceptions
       def main_field
         :role_id
       end

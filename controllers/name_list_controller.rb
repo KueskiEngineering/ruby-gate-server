@@ -34,7 +34,7 @@ module Gate
       end
 
       def ensure_exists!
-        raise(not_found_exception) unless exists?
+        raise(not_found_exception, @name) unless exists?
       end
 
       def id_field

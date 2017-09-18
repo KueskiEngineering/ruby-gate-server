@@ -45,6 +45,22 @@ module Gate
 
     ##
     #
+    class PermissionNotFound < Ant::Exceptions::AntFail
+      def initialize(permission)
+        super('Permission not found!', nil, permission: permission)
+      end
+    end
+
+    ##
+    #
+    class RoleNotFound < Ant::Exceptions::AntFail
+      def initialize(role)
+        super('Role not found!', nil, role: role)
+      end
+    end
+
+    ##
+    #
     class UserNotRegistered < Ant::Exceptions::AntFail
       def initialize(user, site)
         super('The user is not registered on that site', nil,

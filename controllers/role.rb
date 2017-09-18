@@ -31,6 +31,10 @@ module Gate
         { site_id: @site.id }
       end
 
+      def not_found_exception
+        RoleNotFound
+      end
+
       def already_exists_exception
         RoleAlreadyExists
       end

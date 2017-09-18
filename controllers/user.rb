@@ -26,6 +26,10 @@ module Gate
       def already_exists_exception
         UserAlreadyExists
       end
+
+      def not_found_exception
+        UserNotFound
+      end
     end
   end
 end
