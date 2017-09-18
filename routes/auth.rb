@@ -30,7 +30,7 @@ module Gate
             post do
               process_request do
                 auth = Auth.build_auth(params)
-                token = auth.generate_token
+                token = auth.generate_token(params[:site])
                 token.to_h
               end
             end

@@ -16,7 +16,8 @@ module Gate
       namespace :sites do
         post do
           process_request do
-            token_from_request.transaction(raise: true, role: 'register') do
+            token_from_request('gate-server')
+              .transaction(raise: true, role: 'register') do
               site = Site.new(params[:site])
               site.create
               site.to_h
@@ -28,7 +29,8 @@ module Gate
           namespace :permissions do
             post do
               process_request do
-                token_from_request.transaction(raise: true, role: 'register') do
+                token_from_request('gate-server')
+                  .transaction(raise: true, role: 'register') do
                   site = Site.new(params[:site])
                   site.ensure_exists!
                   permission = Permission.new(params[:permission], site)
@@ -42,7 +44,8 @@ module Gate
           namespace :roles do
             post do
               process_request do
-                token_from_request.transaction(raise: true, role: 'register') do
+                token_from_request('gate-server')
+                  .transaction(raise: true, role: 'register') do
                   site = Site.new(params[:site])
                   site.ensure_exists!
                   role = Role.new(params[:role], site)
@@ -56,7 +59,8 @@ module Gate
               namespace :permissions do
                 post do
                   process_request do
-                    token_from_request.transaction(raise: true, role: 'register') do
+                    token_from_request('gate-server')
+                      .transaction(raise: true, role: 'register') do
                       site = Site.new(params[:site])
                       site.ensure_exists!
                       role = Role.new(params[:role], site)
@@ -74,7 +78,8 @@ module Gate
               namespace :assign do
                 post do
                   process_request do
-                    token_from_request.transaction(raise: true, role: 'register') do
+                    token_from_request('gate-server')
+                      .transaction(raise: true, role: 'register') do
                       site = Site.new(params[:site])
                       site.ensure_exists!
                       role = Role.new(params[:role], site)

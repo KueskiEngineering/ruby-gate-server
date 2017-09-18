@@ -13,15 +13,15 @@ module Gate
       DEFAULT_EXPIRATION_TIME = 60 * 60 * 4
       include Exceptions
       class << self
-        def create(data)
+        def create(site, data)
           data[:expiration_time] ||= Time.now + DEFAULT_EXPIRATION_TIME
           data[:creation_time] = Time.now
-          token = JWT.encode(data, Services.jwt_private_key, 'RS512')
+          token = JWT.encode(data, Services.jwt_private_key(site), 'RS512')
           new(token, data)
         end
 
-        def parse(token)
-          data, _payload = JWT.decode(token, Services.jwt_public_key,
+        def parse(token, site)
+          data, _payload = JWT.decode(token, Services.jwt_public_key(site),
                                       true, algoritm: 'RS512')
           new(token, data.symbolize_keys)
         rescue JWT::VerificationError, JWT::DecodeError => _

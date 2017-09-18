@@ -20,10 +20,10 @@ module Gate
                         .first
       end
 
-      def generate_token
+      def generate_token(site)
         raise(WrongPassword) unless valid_password?
         roles = Permission.user_permissions(@user.name, @site.name)
-        Token.create(username: @user.name, site: @site.name, roles: roles)
+        Token.create(site, username: @user.name, site: @site.name, roles: roles)
       end
 
       def exists?
